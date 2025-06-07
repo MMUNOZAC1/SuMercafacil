@@ -11,20 +11,23 @@ public class RegistroUsuarioForm extends JFrame {
     private JTextField nombreField, emailField;
     private JPasswordField passwordField;
     private JComboBox<String> rolCombo;
-    private JButton registrarButton;
+    private JButton registrarButton, volverLoginButton;
 
     public RegistroUsuarioForm(Connection connection) {
         setTitle("Registrar Usuario");
-        setSize(300, 300);
+        setSize(300, 320);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
+        setLocationRelativeTo(null); // Centra la ventana
 
         nombreField = new JTextField();
         emailField = new JTextField();
         passwordField = new JPasswordField();
-        rolCombo = new JComboBox<>(new String[] {"administrador", "gerente"});
+        rolCombo = new JComboBox<>(new String[]{"administrador", "gerente"});
         registrarButton = new JButton("Registrar");
+        volverLoginButton = new JButton("Volver al Login");
 
-        setLayout(new GridLayout(6, 1));
+        setLayout(new GridLayout(8, 1, 5, 5)); // Espaciado vertical
+
         add(new JLabel("Nombre:"));
         add(nombreField);
         add(new JLabel("Email:"));
@@ -34,6 +37,7 @@ public class RegistroUsuarioForm extends JFrame {
         add(new JLabel("Rol:"));
         add(rolCombo);
         add(registrarButton);
+        add(volverLoginButton);
 
         registrarButton.addActionListener(e -> {
             try {
@@ -47,10 +51,18 @@ public class RegistroUsuarioForm extends JFrame {
                 dao.crearUsuario(usuario);
 
                 JOptionPane.showMessageDialog(this, "Usuario registrado exitosamente");
+                dispose(); // Cierra el formulario de registro
+                new LoginForm(connection).setVisible(true); // Abre el LoginForm
             } catch (Exception ex) {
                 ex.printStackTrace();
                 JOptionPane.showMessageDialog(this, "Error al registrar");
             }
         });
+
+        volverLoginButton.addActionListener(e -> {
+            dispose(); // Cierra este formulario
+            new LoginForm(connection).setVisible(true); // Abre el login
+        });
     }
 }
+

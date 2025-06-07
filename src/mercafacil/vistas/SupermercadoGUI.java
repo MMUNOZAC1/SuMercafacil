@@ -1,4 +1,4 @@
-package mercafacil.vista;
+package mercafacil.vistas;
 
 import mercafacil.controlador.SimuladorCobro;
 import mercafacil.modelo.Cliente;
@@ -27,6 +27,15 @@ public class SupermercadoGUI extends JFrame {
         setSize(900, 600);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setVisible(true);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                long tiempoTotal = mercafacil.modelo.Cajera.getTiempoTotalGlobal();
+                double totalGlobal = mercafacil.modelo.Cajera.getTotalGlobal();
+                JOptionPane.showMessageDialog(null,
+                        "Cobro total de la jornada:\nTiempo total: " + tiempoTotal + " ms\nTotal recaudado: $" + totalGlobal,
+                        "Resumen Final", JOptionPane.INFORMATION_MESSAGE);
+            }
+        });
     }
 
     private JPanel crearPanelCatalogo() {
