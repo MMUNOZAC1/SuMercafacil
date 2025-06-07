@@ -7,7 +7,6 @@ public class Cajera extends Thread {
     private Cliente cliente;
     private JTextArea areaReporte;
 
-    // ✅ Variables acumuladoras globales
     private static long tiempoTotalGlobal = 0;
     private static double totalGlobal = 0;
 
@@ -17,7 +16,6 @@ public class Cajera extends Thread {
         this.areaReporte = areaReporte;
     }
 
-    // ✅ Métodos sincronizados para acumular globalmente
     public static synchronized void agregarTiempo(long tiempo) {
         tiempoTotalGlobal += tiempo;
     }
@@ -62,16 +60,14 @@ public class Cajera extends Thread {
         reporte.append("\nTotal: $").append(total);
         reporte.append("\nTiempo total: ").append(duracion).append(" ms\n");
 
-        // ✅ Actualizar acumuladores globales
         agregarTiempo(duracion);
         agregarTotal(total);
 
         reporte.append("------------------------------------------------------\n");
-        reporte.append("👉 Total acumulado global: $").append(getTotalGlobal()).append("\n");
-        reporte.append("⏱️ Tiempo acumulado total: ").append(getTiempoTotalGlobal()).append(" ms\n");
+        reporte.append("Total acumulado global: $").append(getTotalGlobal()).append("\n");
+        reporte.append("Tiempo acumulado total: ").append(getTiempoTotalGlobal()).append(" ms\n");
         reporte.append("======================================================\n\n");
 
-        // Mostrar en el área de reporte
         SwingUtilities.invokeLater(() -> areaReporte.append(reporte.toString()));
     }
 }
