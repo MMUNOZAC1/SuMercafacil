@@ -7,8 +7,10 @@ public class Usuario {
     private String contrasena;
     private String rol;
 
+    // Constructor por defecto (necesario para formularios)
     public Usuario() {}
 
+    // Constructor para SELECT (incluye ID)
     public Usuario(int id, String nombre, String email, String contrasena, String rol) {
         this.id = id;
         this.nombre = nombre;
@@ -17,6 +19,15 @@ public class Usuario {
         this.rol = rol;
     }
 
+    // Constructor para INSERT (sin ID)
+    public Usuario(String nombre, String email, String contrasena, String rol) {
+        this.nombre = nombre;
+        this.email = email;
+        this.contrasena = contrasena;
+        this.rol = rol;
+    }
+
+    // Getters y setters
     public int getId() { return id; }
     public void setId(int id) { this.id = id; }
 

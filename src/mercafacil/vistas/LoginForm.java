@@ -1,46 +1,60 @@
 package mercafacil.vistas;
 
-import mercafacil.controlador.AutenticacionService;
-import mercafacil.controlador.UsuarioDAO;
 import mercafacil.modelo.Usuario;
+import mercafacil.controlador.UsuarioDAO;
+import mercafacil.controlador.AutenticacionService;
+import mercafacil.vistas.SupermercadoGUI;
 
 import javax.swing.*;
 import java.awt.*;
 import java.sql.Connection;
 
 public class LoginForm extends JFrame {
-    private JTextField emailField;
-    private JPasswordField passwordField;
-    private JButton loginButton;
-    private JButton registerButton;
+    private JTextField txtEmail;
+    private JPasswordField txtPassword;
+    private JButton btnLogin, btnRegistro;
+    private final Connection connection;
 
     public LoginForm(Connection connection) {
-        setTitle("Iniciar Sesión");
+        this.connection = connection;
+
+        setTitle("Login - MercaFácil");
         setSize(300, 220);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
-        setLocationRelativeTo(null); // Centrar ventana
+        setLocationRelativeTo(null);
+        initUI();
+    }
 
-        emailField = new JTextField();
-        passwordField = new JPasswordField();
-        loginButton = new JButton("Entrar");
-        registerButton = new JButton("Regístrate");
+    private void initUI() {
+        JPanel panel = new JPanel();
+        panel.setLayout(new GridLayout(5, 1, 5, 5));
 
-        setLayout(new GridLayout(5, 1, 5, 5));
-        add(new JLabel("Email:"));
-        add(emailField);
-        add(new JLabel("Contraseña:"));
-        add(passwordField);
-        add(loginButton);
-        add(registerButton);
+        txtEmail = new JTextField();
+        txtPassword = new JPasswordField();
+        btnLogin = new JButton("Iniciar Sesión");
+        btnRegistro = new JButton("Registrar Usuario");
 
-        loginButton.addActionListener(e -> {
+        panel.add(new JLabel("Email:"));
+        panel.add(txtEmail);
+        panel.add(new JLabel("Contraseña:"));
+        panel.add(txtPassword);
+        panel.add(btnLogin);
+        panel.add(btnRegistro);
+
+        add(panel);
+
+        // Acceso
+        btnLogin.addActionListener(e -> {
+            String email = txtEmail.getText();
+            String pass = new String(txtPassword.getPassword());
+
             try {
                 UsuarioDAO dao = new UsuarioDAO(connection);
                 AutenticacionService auth = new AutenticacionService(dao);
-                Usuario user = auth.autenticar(emailField.getText(), new String(passwordField.getPassword()));
-                if (user != null) {
-                    JOptionPane.showMessageDialog(this, "Bienvenido " + user.getNombre() + " (" + user.getRol() + ")");
-                    // Aquí podrías abrir el menú principal u otra ventana
+                Usuario usuario = auth.autenticar(email, pass);
+
+                if (usuario != null) {
+                    abrirPrincipal(usuario);
                 } else {
                     JOptionPane.showMessageDialog(this, "Credenciales inválidas");
                 }
@@ -50,9 +64,17 @@ public class LoginForm extends JFrame {
             }
         });
 
-        registerButton.addActionListener(e -> {
-            dispose(); // Cierra el login
-            new RegistroUsuarioForm(connection).setVisible(true); // Abre el formulario de registro
+        // Redirigir a formulario de registro
+        btnRegistro.addActionListener(e -> {
+            dispose();
+            new RegistroUsuarioForm(connection).setVisible(true);
         });
+    }
+
+    private void abrirPrincipal(Usuario usuario) {
+        SupermercadoGUI gui = new SupermercadoGUI(connection);
+        gui.ajustarInterfazPorRol(usuario);
+        gui.setVisible(true);
+        this.dispose();
     }
 }

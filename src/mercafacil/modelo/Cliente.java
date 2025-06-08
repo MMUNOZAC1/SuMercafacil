@@ -4,18 +4,23 @@ import java.util.List;
 
 public class Cliente {
     private String nombre;
-    private List<Producto> carrito;
+    private List<Producto> productos;
 
-    public Cliente(String nombre, List<Producto> carrito) {
+    public Cliente(String nombre, List<Producto> productos) {
         this.nombre = nombre;
-        this.carrito = carrito;
+        this.productos = productos;
     }
 
     public String getNombre() {
         return nombre;
     }
 
-    public List<Producto> getCarrito() {
-        return carrito;
+    public List<Producto> getProductos() {
+        return productos;
+    }
+
+    @Override
+    public String toString() {
+        return nombre;
     }
 }

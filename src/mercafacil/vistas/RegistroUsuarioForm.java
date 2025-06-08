@@ -12,12 +12,15 @@ public class RegistroUsuarioForm extends JFrame {
     private JPasswordField passwordField;
     private JComboBox<String> rolCombo;
     private JButton registrarButton, volverLoginButton;
+    private Connection connection;
 
     public RegistroUsuarioForm(Connection connection) {
+        this.connection = connection;
+
         setTitle("Registrar Usuario");
         setSize(300, 320);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
-        setLocationRelativeTo(null); // Centra la ventana
+        setLocationRelativeTo(null);
 
         nombreField = new JTextField();
         emailField = new JTextField();
@@ -26,7 +29,7 @@ public class RegistroUsuarioForm extends JFrame {
         registrarButton = new JButton("Registrar");
         volverLoginButton = new JButton("Volver al Login");
 
-        setLayout(new GridLayout(8, 1, 5, 5)); // Espaciado vertical
+        setLayout(new GridLayout(8, 1, 5, 5));
 
         add(new JLabel("Nombre:"));
         add(nombreField);
@@ -51,18 +54,17 @@ public class RegistroUsuarioForm extends JFrame {
                 dao.crearUsuario(usuario);
 
                 JOptionPane.showMessageDialog(this, "Usuario registrado exitosamente");
-                dispose(); // Cierra el formulario de registro
-                new LoginForm(connection).setVisible(true); // Abre el LoginForm
+                dispose();
+                new LoginForm(connection).setVisible(true);
             } catch (Exception ex) {
                 ex.printStackTrace();
-                JOptionPane.showMessageDialog(this, "Error al registrar");
+                JOptionPane.showMessageDialog(this, "Error al registrar usuario");
             }
         });
 
         volverLoginButton.addActionListener(e -> {
-            dispose(); // Cierra este formulario
-            new LoginForm(connection).setVisible(true); // Abre el login
+            dispose();
+            new LoginForm(connection).setVisible(true);
         });
     }
 }
-

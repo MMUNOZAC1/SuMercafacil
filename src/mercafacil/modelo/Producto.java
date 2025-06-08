@@ -2,24 +2,28 @@ package mercafacil.modelo;
 
 public class Producto {
     private String nombre;
-    private double precio;
-    private int tiempoProceso;
+    private int cantidad;
+    private double precioUnitario;
 
-    public Producto(String nombre, double precio, int tiempoProceso) {
+    public Producto(String nombre, int cantidad, double precioUnitario) {
         this.nombre = nombre;
-        this.precio = precio;
-        this.tiempoProceso = tiempoProceso;
+        this.cantidad = cantidad;
+        this.precioUnitario = precioUnitario;
     }
 
     public String getNombre() {
         return nombre;
     }
 
-    public double getPrecio() {
-        return precio;
+    public int getCantidad() {
+        return cantidad;
     }
 
-    public int getTiempoProceso() {
-        return tiempoProceso;
+    public double getPrecioUnitario() {
+        return precioUnitario;
+    }
+
+    public void setCantidad(int cantidad) {
+        this.cantidad = cantidad;
     }
 }
